@@ -6,6 +6,19 @@ const config = {
     polyfillsOptimization: true
   },
 
+  async rewrites() {
+    return [
+      {
+        source: '/--internal-paths/:path*',
+        destination: '/:path*',
+      },
+      {
+        source: '/:whatever*',
+        destination: '/api/proxy/:whatever*',
+      },
+    ]
+  },
+
   webpack(config, { dev, isServer }) {
     const splitChunks = config.optimization && config.optimization.splitChunks
     if (splitChunks) {
