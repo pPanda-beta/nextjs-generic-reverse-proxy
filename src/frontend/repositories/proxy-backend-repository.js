@@ -1,5 +1,7 @@
+import {ProxyBackend} from "../../models";
+
 export class ProxyBackendRepository {
-  backends = [{
+  backends = [new ProxyBackend({
     origin: 'https://www.google.com',
     headers: {
       'accept': ['application/json']
@@ -7,9 +9,10 @@ export class ProxyBackendRepository {
     cookies: {
       abc: 456
     },
-  }];
-
+  })];
 
   getAll = async () => [...this.backends];
+
+  add = async (proxyBackend) => this.backends.push(proxyBackend);
 }
 

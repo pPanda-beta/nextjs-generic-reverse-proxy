@@ -16,6 +16,13 @@ export class ProxyBackendStore extends SimpleStore {
         proxyBackends: await this.repository.getAll()
       });
       this.setState({loading: false});
+    },
+
+    addBackend: async (proxyBackend) => {
+      this.setState({saving: true});
+      await this.repository.add(proxyBackend);
+      this.setState({saving: false});
+      await this.actions.fetchAllBackends();
     }
   }
 }
