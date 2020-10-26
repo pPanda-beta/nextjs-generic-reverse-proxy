@@ -11,6 +11,7 @@
     "cross-env": "^7.0.2"
   },
   "dependencies": {
+    "cookie": "^0.4.1",
     "next": "^9.5.5",
     "next-http-proxy-middleware": "^1.0.4",
     "preact": "^10.5.4",
