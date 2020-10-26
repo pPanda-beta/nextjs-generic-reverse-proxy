@@ -1,5 +1,5 @@
 import React from 'react';
-import {ViewProxyBackends} from "../components/proxy-backend-views";
+import {ViewProxyBackends} from "../frontend/components/proxy-backend-views";
 
 const styles = `
 details {
