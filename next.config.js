@@ -9,6 +9,10 @@ const config = {
   async rewrites() {
     return [
       {
+        source: '/',
+        destination: '/api/proxy/',
+      },
+      {
         source: '/--internal-paths/:path*',
         destination: '/:path*',
       },
