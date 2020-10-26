@@ -4,7 +4,11 @@ import {proxyStore} from "../beans";
 
 const TableKeyValue = ({title = '', kvPairs = []}) => (
     <table>
-      <thead><td colspan={2}>{title}</td></thead>
+      <thead>
+      <tr>
+        <td colspan={2}>{title}</td>
+      </tr>
+      </thead>
       {kvPairs.map(([k, v]) => (
           <tr>
             <td>{k}</td>
