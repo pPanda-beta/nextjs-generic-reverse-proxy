@@ -11,6 +11,15 @@ details {
   outline: none;
   font-size: 15px;
 }
+
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 0.2rem solid black;
+}
+
 `;
 
 export default () => (

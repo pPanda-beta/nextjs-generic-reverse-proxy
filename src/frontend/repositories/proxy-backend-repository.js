@@ -1,12 +1,14 @@
 export class ProxyBackendRepository {
   backends = [{
     origin: 'https://www.google.com',
-    headers: [],
-    cookies: [],
+    headers: {
+      'accept': ['application/json']
+    },
+    cookies: {
+      abc: 456
+    },
   }];
 
-  constructor() {
-  }
 
   getAll = async () => [...this.backends];
 }

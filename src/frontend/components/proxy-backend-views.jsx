@@ -2,15 +2,30 @@ import React, {useEffect} from "react";
 import {connect} from "../stores/base-store";
 import {proxyStore} from "../beans";
 
+const TableKeyValue = ({title = '', kvPairs = []}) => (
+    <table>
+      <thead><td colspan={2}>{title}</td></thead>
+      {kvPairs.map(([k, v]) => (
+          <tr>
+            <td>{k}</td>
+            <td>{v}</td>
+          </tr>
+      ))}
+    </table>
+);
+
 const ProxyBackendView = ({proxyBackend}) => (
     <details>
-      <summary>Section 1</summary>
-      <ul>
-        <li>Origin: {proxyBackend.origin}</li>
-        <pre>
-        {JSON.stringify(proxyBackend)}
-        </pre>
-      </ul>
+      <summary>{proxyBackend.origin}</summary>
+      <TableKeyValue
+          title="Headers"
+          kvPairs={Object.entries(proxyBackend.headers)
+          .flatMap(([k, values]) => values.map(v => [k, v]))}
+      />
+      <TableKeyValue
+          title="Cookies"
+          kvPairs={Object.entries(proxyBackend.cookies)}
+      />
     </details>
 );
 
