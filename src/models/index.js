@@ -30,6 +30,9 @@ export class ProxyBackend {
 
   getAllHeaders = () => ({...this.headers, Cookie: this.getCookieHeader()});
 
+  serialize = (encoding = 'base64') => Buffer.from(
+      JSON.stringify(this), 'utf8').toString(encoding);
+
   static fromBase64(encodedObj) {
     const serializedJson = Buffer.from(encodedObj, 'base64').toString('ascii');
     const kv = JSON.parse(serializedJson);
