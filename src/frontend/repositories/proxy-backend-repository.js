@@ -1,18 +1,40 @@
 import {ProxyBackend} from "../../models";
 
+const TODO = () => {
+  throw new Error("NOT IMPLEMENTED or ABSTRACT");
+};
+
 export class ProxyBackendRepository {
-  backends = [new ProxyBackend({
-    origin: 'https://www.google.com',
-    headers: {
-      'accept': ['application/json']
-    },
-    cookies: {
-      abc: 456
-    },
-  })];
+  getAll = async () => TODO();
 
-  getAll = async () => [...this.backends];
-
-  add = async (proxyBackend) => this.backends.push(proxyBackend);
+  add = async (proxyBackend) => TODO();
 }
 
+// We should switch to https://www.npmjs.com/package/browserfs
+export class LocalStorageBaseBackendRepository extends ProxyBackendRepository {
+  static LOCAL_STORAGE_KEY = "__proxy_backends"; // Careful, it is visible to proxied frontend js
+  _localStorageProvider;
+
+  constructor(localStorageProvider) {
+    super();
+    this._localStorageProvider = localStorageProvider;
+  }
+
+  getAll = async () => this._getBackends();
+
+  add = async (proxyBackend) => this._setBackends(
+      [...this._getBackends(), proxyBackend]);
+
+  get _localStorage() {
+    return this._localStorageProvider();
+  }
+
+  _getBackends = () => (
+      JSON.parse(this._localStorage.getItem(
+          LocalStorageBaseBackendRepository.LOCAL_STORAGE_KEY)) || []
+  ).map(obj => ProxyBackend.createFromObject(obj));
+
+  _setBackends = (backends) => this._localStorage.setItem(
+      LocalStorageBaseBackendRepository.LOCAL_STORAGE_KEY,
+      JSON.stringify(backends));
+}
