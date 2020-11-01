@@ -48,22 +48,19 @@ class NestedMap {
 }
 
 const PROPERTY_STORAGE = new NestedMap();
+const identity = t => t;
 
 const propertyDecorator = ({
-  afterGet, beforeSet
+  afterGet: getTransformer = identity, beforeSet: setTransformer = identity
 } = {}) => (clazz, name, descriptor) => {
-  const identity = t => t;
-  const getTransformer = afterGet || identity;
-  const setTransformer = beforeSet || identity;
-
   const {get: oldGetter, set: oldSetter, initializer, value: oldValue} = descriptor;
 
   const defaultValue = oldValue || (initializer && initializer());
 
-  const managedGetter = (self) => PROPERTY_STORAGE.getOrElse(
-      [clazz, self, name], defaultValue);
-  const managedSetter = (val, self) => PROPERTY_STORAGE.set(
-      [clazz, self, name], val);
+  const managedGetter = (instance) => PROPERTY_STORAGE.getOrElse(
+      [clazz, instance, name], defaultValue);
+  const managedSetter = (val, instance) => PROPERTY_STORAGE.set(
+      [clazz, instance, name], val);
 
   const getter = oldGetter || managedGetter;
   const setter = oldSetter || managedSetter;
