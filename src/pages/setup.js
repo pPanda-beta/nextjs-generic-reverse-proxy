@@ -1,6 +1,7 @@
 import React from 'react';
 import {ViewProxyBackends} from "../frontend/components/proxy-backend-views";
 import {AddProxyBackend} from "../frontend/components/proxy-backend-editors";
+import {LinkBasedInstaller} from "../frontend/components/proxy-backend-installers";
 
 const styles = `
 details {
@@ -23,9 +24,10 @@ table, th, td {
 
 `;
 
-export default () => (
+export default ({url}) => (
     <>
       <style> {styles} </style>
+      <LinkBasedInstaller url={url}/>
       <AddProxyBackend/>
       <ViewProxyBackends/>
     </>

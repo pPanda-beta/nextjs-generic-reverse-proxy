@@ -10,10 +10,13 @@ export class UIStore extends SimpleStore {
 
   actions = {
     copyInstallerLink: (proxyBackend) => navigator.clipboard.writeText(
+        window.location.origin +
         SETUP_PAGE_LOCATION + "?backend=" + proxyBackend.serialize(),
     ),
     activateBackend: (proxyBackend) => window.open(
         ACTIVATE_PAGE_LOCATION + "?backend=" + proxyBackend.serialize(),
         "_blank"),
+    redirectToSetupPage: () => window.history.replaceState(
+        {}, document.title, SETUP_PAGE_LOCATION)
   }
 }

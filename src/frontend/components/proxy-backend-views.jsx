@@ -32,7 +32,7 @@ const ProxyBackendViewSummary = ({proxyBackend, activateBackend, copyInstallerLi
     </summary>
 );
 
-const ProxyBackendView = (props) => (
+export const ProxyBackendView = (props) => (
     <details open={!!props.opened}>
       <ProxyBackendViewSummary {...props} />
       <TableKeyValue
