@@ -1,4 +1,5 @@
 import {ProxyBackend} from "../../models";
+import {lazyInitialize} from "core-decorators";
 
 const TODO = () => {
   throw new Error("NOT IMPLEMENTED or ABSTRACT");
@@ -14,6 +15,8 @@ export class ProxyBackendRepository {
 export class LocalStorageBaseBackendRepository extends ProxyBackendRepository {
   static LOCAL_STORAGE_KEY = "__proxy_backends"; // Careful, it is visible to proxied frontend js
   _localStorageProvider;
+  @lazyInitialize
+  _localStorage = this._localStorageProvider();
 
   constructor(localStorageProvider) {
     super();
@@ -24,10 +27,6 @@ export class LocalStorageBaseBackendRepository extends ProxyBackendRepository {
 
   add = async (proxyBackend) => this._setBackends(
       [...this._getBackends(), proxyBackend]);
-
-  get _localStorage() {
-    return this._localStorageProvider();
-  }
 
   _getBackends = () => (
       JSON.parse(this._localStorage.getItem(
