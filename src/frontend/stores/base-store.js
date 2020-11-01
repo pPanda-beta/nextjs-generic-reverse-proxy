@@ -4,11 +4,14 @@ import React, {useEffect, useState} from "react";
 export class SimpleStore {
   _state;
 
-  constructor(initialState) {
+  constructor(initialState = {}) {
     this._state = initialState;
   }
 
-  actions = {};
+  get actions() {
+    return {};
+  }
+
   listenerId = 0;
   listeners = {};
 
@@ -31,6 +34,28 @@ export class SimpleStore {
     Object.values(this.listeners).forEach(handler => handler(this._state));
     console.log("Store updated with : ", this._state);
   }
+}
+
+// TODO: Too much risky, stores need to be mutually exclusive in terms of actions and state
+export class MergedStore extends SimpleStore {
+  stores;
+
+  constructor(stores, initialState = {}) {
+    super(MergedStore._mixStates(stores, initialState));
+    this.stores = stores;
+    this.stores.forEach(store => store.subscribe(
+        stateDeltaOfThatStore => this.setState(stateDeltaOfThatStore)));
+  }
+
+  get actions() {
+    return Object.fromEntries(this.stores.flatMap(
+        store => Object.entries(store.actions)));
+  }
+
+  static _mixStates = (stores, initialState) => Object.fromEntries([
+    ...stores.flatMap(store => Object.entries(store.state)),
+    Object.entries(initialState)
+  ]);
 }
 
 export const connect = (store) => (StatelessComponent) => (propsFromParent) => {

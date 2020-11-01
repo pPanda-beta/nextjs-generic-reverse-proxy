@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import {connect} from "../stores/base-store";
-import {proxyStore} from "../beans";
-import {ACTIVATE_PAGE_LOCATION, SETUP_PAGE_LOCATION} from "../../configs";
+import {proxyBackendUiStore} from "../beans";
 
 const TableKeyValue = ({title = '', kvPairs = []}) => (
     <table>
@@ -19,15 +18,7 @@ const TableKeyValue = ({title = '', kvPairs = []}) => (
     </table>
 );
 
-const copyInstallerLink = (proxyBackend) => navigator.clipboard.writeText(
-    SETUP_PAGE_LOCATION + "?backend=" + proxyBackend.serialize(),
-);
-
-const activateBackend = (proxyBackend) => window.open(
-    ACTIVATE_PAGE_LOCATION + "?backend=" + proxyBackend.serialize(),
-    "_blank");
-
-const ProxyBackendViewSummary = ({proxyBackend}) => (
+const ProxyBackendViewSummary = ({proxyBackend, activateBackend, copyInstallerLink}) => (
     <summary>
       {proxyBackend.origin}
       <button style={{float: 'right'}}
@@ -41,31 +32,34 @@ const ProxyBackendViewSummary = ({proxyBackend}) => (
     </summary>
 );
 
-const ProxyBackendView = ({proxyBackend}) => (
-    <details>
-      <ProxyBackendViewSummary proxyBackend={proxyBackend}/>
+const ProxyBackendView = (props) => (
+    <details open={!!props.opened}>
+      <ProxyBackendViewSummary {...props} />
       <TableKeyValue
           title="Headers"
-          kvPairs={Object.entries(proxyBackend.headers)
+          kvPairs={Object.entries(props.proxyBackend.headers)
           .flatMap(([k, values]) => values.map(v => [k, v]))}
       />
       <TableKeyValue
           title="Cookies"
-          kvPairs={Object.entries(proxyBackend.cookies)}
+          kvPairs={Object.entries(props.proxyBackend.cookies)}
       />
     </details>
 );
 
-const ViewProxyBackendsComponent = ({proxyBackends, fetchAllBackends}) => {
+const ViewProxyBackendsComponent = ({proxyBackends, fetchAllBackends, activateBackend, copyInstallerLink}) => {
   useEffect(fetchAllBackends, []);
   console.log("Rendering...", proxyBackends);
   return (
       <div>
         <h1>Installed backends : </h1>
-        {proxyBackends.map(t => (<ProxyBackendView proxyBackend={t}/>))}
+        {proxyBackends.map(t => (<ProxyBackendView proxyBackend={t} {...{
+          activateBackend,
+          copyInstallerLink
+        }} />))}
       </div>
   );
 };
 
-export const ViewProxyBackends = connect(proxyStore)(
+export const ViewProxyBackends = connect(proxyBackendUiStore)(
     ViewProxyBackendsComponent);
