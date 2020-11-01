@@ -35,5 +35,5 @@ export class LocalStorageBaseBackendRepository extends ProxyBackendRepository {
 
   _setBackends = (backends) => this._localStorage.setItem(
       LocalStorageBaseBackendRepository.LOCAL_STORAGE_KEY,
-      JSON.stringify(backends));
+      JSON.stringify(backends.map(t => t.asObject())));
 }

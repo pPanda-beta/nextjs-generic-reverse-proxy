@@ -1,24 +1,11 @@
-export const dataclass = (clazz) => {
-  class Dataclass extends clazz {
-    constructor(fields) {
-      super();
-      Object.entries({...fields})
-      .forEach(([k, v]) => this[k] = v);
-    }
-
-    static createFromObject = (fields) => new this(fields);
-  }
-
-  Object.defineProperty(Dataclass, 'name', {value: clazz.name});
-  return Dataclass;
-};
-
-
+import {dataclass, keepNonEmptyKeysOnly} from "./utils";
 
 @dataclass
 export class ProxyBackend {
   origin;
+  @keepNonEmptyKeysOnly
   headers = {};
+  @keepNonEmptyKeysOnly
   cookies = {};
 
   getCookieHeader = () => (
@@ -39,4 +26,3 @@ export class ProxyBackend {
     return this.createFromObject(kv);
   }
 }
-
