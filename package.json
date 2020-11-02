@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-preact-demo",
+  "name": "nextjs-generic-rev-proxy",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
