@@ -22,5 +22,5 @@
     "react-dom": "npm:@preact/compat@^0.0.3",
     "react-ssr-prepass": "npm:preact-ssr-prepass@^1.1.2"
   },
-  "license": "UNLICENSED"
+  "license": "MIT"
 }
