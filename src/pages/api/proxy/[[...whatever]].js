@@ -15,6 +15,8 @@ export default (req, res) => {
       return backend.origin;
     },
     changeOrigin: true,
+    autoRewrite: true,
+    protocolRewrite: true,
     headers: backend.getAllHeaders(),
   });
 };
