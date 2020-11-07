@@ -8,6 +8,9 @@ export class ProxyBackend {
   @keepNonEmptyKeysOnly
   cookies = {};
 
+  @keepNonEmptyKeysOnly
+  localStorageItems = {};
+
   getCookieHeader = () => (
       Object.entries(this.cookies)
       .filter(([_, value]) => Boolean(value))
@@ -19,6 +22,8 @@ export class ProxyBackend {
 
   serialize = (encoding = 'base64') => Buffer.from(
       JSON.stringify(this.asObject()), 'utf8').toString(encoding);
+
+  getLocalStoragePairs = () => Object.entries(this.localStorageItems);
 
   static fromBase64(encodedObj) {
     const serializedJson = Buffer.from(encodedObj, 'base64').toString('ascii');

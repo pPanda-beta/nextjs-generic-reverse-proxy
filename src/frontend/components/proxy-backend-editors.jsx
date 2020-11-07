@@ -48,6 +48,7 @@ const AddProxyBackendComponent = ({saving, addBackend}) => {
   const [origin, setOrigin] = useState('https://');
   const [headers, setHeaders] = useState([]);
   const [cookies, setCookies] = useState([]);
+  const [localStorage, setLocalstorage] = useState([]);
 
   const headersAsKeyMultivaluePairs = () => headers.reduce(
       ...groupingBy(t => t.key, t => t.value));
@@ -56,6 +57,7 @@ const AddProxyBackendComponent = ({saving, addBackend}) => {
     origin,
     headers: headersAsKeyMultivaluePairs(),
     cookies: Object.fromEntries(cookies.map(t => [t.key, t.value])),
+    localStorageItems: Object.fromEntries(localStorage.map(t => [t.key, t.value])),
   }))
 
   return (
@@ -68,6 +70,8 @@ const AddProxyBackendComponent = ({saving, addBackend}) => {
                         onKVsUpdate={setHeaders}/>
         <KeyValueEditor label="Cookies : " kvs={cookies}
                         onKVsUpdate={setCookies}/>
+        <KeyValueEditor label="LocalStorage : " kvs={localStorage}
+                        onKVsUpdate={setLocalstorage}/>
         <br/>
         <button onclick={installDraftBackend} disabled={saving}>
           {saving ? 'Installing...' : 'Install backend'}

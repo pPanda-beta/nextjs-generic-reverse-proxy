@@ -44,6 +44,10 @@ export const ProxyBackendView = (props) => (
           title="Cookies"
           kvPairs={Object.entries(props.proxyBackend.cookies)}
       />
+      <TableKeyValue
+          title="LocalStorage"
+          kvPairs={props.proxyBackend.getLocalStoragePairs()}
+      />
     </details>
 );
 
