@@ -22,8 +22,11 @@ export class UIStore extends SimpleStore {
         .filter(([key, _]) => key !== LocalStorageBaseBackendRepository.LOCAL_STORAGE_KEY)
         .forEach(([k, v]) => localStorage.setItem(k, v))
 
+      const proxyWithoutFrontendComponents = proxyBackend.clone(
+          {localStorageItems: {}});
+
       window.open(
-          ACTIVATE_API_LOCATION + "?backend=" + proxyBackend.serialize(),
+          ACTIVATE_API_LOCATION + "?backend=" + proxyWithoutFrontendComponents.serialize(),
           "_blank");
     },
     redirectToSetupPage: () => window.history.replaceState(
