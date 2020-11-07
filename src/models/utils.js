@@ -7,6 +7,9 @@ const getAllDefinedKeys = (obj) => (obj.constructor
 const getAllDefinedEntries = (obj) => getAllDefinedKeys(obj).map(
     k => [k, obj[k]]);
 
+const getAllDefinedDataEntries = (obj) => getAllDefinedEntries(obj).filter(
+    ([_, v]) => typeof (v) !== "function")
+
 export const dataclass = (clazz) => {
   class Dataclass extends clazz {
     constructor(fields) {
@@ -15,7 +18,10 @@ export const dataclass = (clazz) => {
       .forEach(([k, v]) => this[k] = v);
     }
 
-    asObject = () => Object.fromEntries(getAllDefinedEntries(this));
+    asObject = () => Object.fromEntries(getAllDefinedDataEntries(this));
+
+    clone = (overrides = {}) => this.constructor.createFromObject(
+        {...this.asObject(), ...overrides});
 
     static createFromObject = (fields) => new this(fields);
   }
