@@ -1,8 +1,27 @@
 {
-  "presets": ["next/babel"],
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-env": {
+          "targets": {
+            "browsers": "> 1%, not dead"
+          }
+        },
+        "transform-runtime": {
+          "useESModules": false
+        },
+        "styled-jsx": {},
+        "class-properties": {}
+      }
+    ]
+  ],
   "plugins": [
-    ["@babel/plugin-proposal-decorators", {
-      "legacy": true
-    }]
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ]
   ]
 }
